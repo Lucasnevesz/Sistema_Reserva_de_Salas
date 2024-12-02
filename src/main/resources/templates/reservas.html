@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Sala</title>
+</head>
+<body>
+    <h1>Reservar Sala</h1>
+    <form action="/reservas/criar" method="POST">
+        <label for="sala">Escolha a Sala:</label>
+        <select id="sala" name="salaId" required>
+            <option th:each="sala : ${salas}" 
+                    th:value="${sala.id}" 
+                    th:text="${sala.nome}"></option>
+        </select>
+
+        <label for="usuario">Nome do Usuário:</label>
+        <input type="text" id="usuario" name="usuario" required>
+
+        <label for="dataInicio">Data e Hora de Início:</label>
+        <input type="datetime-local" id="dataInicio" name="dataHoraInicio" required>
+
+        <label for="dataFim">Data e Hora de Fim:</label>
+        <input type="datetime-local" id="dataFim" name="dataHoraFim" required>
+
+        <button type="submit">Reservar</button>
+        <a href="/" class="button">
+            <button type="button">Voltar para o Início</button>
+        </a>
+    </form>
+
+    <h2>Minhas Reservas</h2>
+    <ul>
+        <li th:each="reserva : ${reservas}">
+            Sala: <span th:text="${reserva.sala.nome}"></span>,<br>
+            Usuário: <span th:text="${reserva.usuario}"></span>,<br>
+            Data de Início: <span th:text="${reserva.dataHora}"></span>,<br>
+            Data de Fim: <span th:text="${reserva.dataHoraFim}"></span><br>
+            <form th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Cancelar Reserva</button>
+            </form>
+        </li>
+    </ul>
+</body>
+</html>

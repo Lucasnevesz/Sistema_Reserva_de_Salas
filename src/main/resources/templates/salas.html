@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Salas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label, input, button, select {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Criar nova sala</h1>
+
+    <form action="/salas/criar" method="POST">
+        <label for="nome">Nome da Sala:</label>
+        <input type="text" id="nome" name="nome" required>
+    
+        <label for="capacidade">Capacidade:</label>
+        <input type="number" id="capacidade" name="capacidade" required>
+    
+        <label for="recursos">Recursos (separados por vírgula):</label>
+        <input type="text" id="recursos" name="recursos">
+    
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="A">Ativa</option>
+            <option value="I">Inativa</option>
+        </select>
+    
+        <button type="submit">Criar Sala</button>
+        <a href="/" class="button">
+            <button type="button">Voltar para o Início</button>
+        </a>
+    </form>  
+
+    <h2>Salas Disponíveis</h2>
+
+    <form action="/salas" method="GET">
+        
+        <label for="capacidade">Capacidade (mínima):</label>
+        <input type="number" id="capacidade" name="capacidade" min="1">
+
+        <label for="recursos">Recursos (separados por vírgula):</label>
+        <input type="text" id="recursos" name="recursos">
+
+        <button type="submit">Filtrar</button>
+    </form>
+    
+    <ul>
+        <li th:each="sala : ${salas}">
+            Nome: <span th:text="${sala.nome}"></span>,<br>
+            Capacidade: <span th:text="${sala.capacidade}"></span>,<br>
+            Recursos: <span th:text="${sala.recursos}"></span>, <br>
+            Status: <span th:text="${sala.status == 'A' ? 'Ativa' : 'Inativa'}"></span><br>
+            
+            <a th:href="@{/salas/{id}/editar(id=${sala.id})}">Editar</a>
+        </li>
+    </ul>
+
+</body>
+</html>
